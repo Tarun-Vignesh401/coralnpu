@@ -134,7 +134,7 @@ verilator_cocotb_model = rule(
         "verilog_source": attr.label(allow_single_file = True, mandatory = True),
         "hdl_toplevel": attr.string(mandatory = True),
         "cflags": attr.string_list(default = []),
-        "trace": attr.bool(default = False),
+        "trace": attr.bool(default = True),
         "vlt_tpl": attr.label(
             default = "@coralnpu_hw//rules:default.vlt.tpl",
             allow_single_file = True,

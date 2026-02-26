@@ -21,22 +21,40 @@ from coralnpu_test_utils.sim_test_fixture import Fixture
 
 @cocotb.test()
 async def inst_cycle_counter_test(dut):
+    LHS_ROWS = 16
+    RHS_COLS = 16
+    INNER = 48
+
     r = runfiles.Create()
     fixture = await Fixture.Create(dut)
     elf_path = r.Rlocation("coralnpu_hw/tests/cocotb/sca_tests/mac/inst_cycle_counter_example.elf")
     await fixture.load_elf_and_lookup_symbols(
         elf_path,
-        ['cycle_count_lo', 'cycle_count_hi', 'inst_count_lo', 'inst_count_hi','input1','input2','output'],
+        ['cycle_count_lo', 'cycle_count_hi','lhs_input','rhs_input','result_output'],
     )
+    np_type = np.int8
+    min_value = np.iinfo(np_type).min
+    max_value = np.iinfo(np_type).max + 1  # One above.
+    lhs_data = np.random.randint(min_value,
+                                 max_value, [LHS_ROWS, INNER],
+                                 dtype=np_type)
+    rhs_data = np.random.randint(min_value,
+                                 max_value, [INNER, RHS_COLS],
+                                 dtype=np_type)
+    await fixture.write('lhs_input', lhs_data.flatten())
+    await fixture.write('rhs_input', rhs_data.transpose().flatten())
+    await fixture.run_to_halt(timeout_cycles=1000000)
 
-    input1 = np.arange(8,dtype=np.uint32)
-    input2 = (5 * np.ones(8, dtype=np.uint32))
-    input1_addr = fixture.symbols['input1']
-    input2_addr = fixture.symbols['input2']
-    await fixture.core_mini_axi.write(input1_addr, input1)
-    await fixture.core_mini_axi.write(input2_addr, input2)
+    '''
+    lhs_input = np.arange(256,dtype=np.uint8)
+    rhs_input = (5 * np.ones(769, dtype=np.uint8))
+    lhs_input_addr = fixture.symbols['lhs_input']
+    rhs_input_addr = fixture.symbols['rhs_input']
+    await fixture.core_mini_axi.write(lhs_input_addr, lhs_input)
+    await fixture.core_mini_axi.write(rhs_input_addr, rhs_input)
 
     await fixture.run_to_halt()
+    '''
 
     cycle_count_lo = (await fixture.read_word('cycle_count_lo')).view(np.int32)
     cycle_count_hi = (await fixture.read_word('cycle_count_hi')).view(np.int32)

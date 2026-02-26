@@ -47,7 +47,7 @@ COCOTB_TEST_BINARY_TARGETS = glob(["**/*.elf"]) + glob(["**/*.o"]) + [
 
 verilator_cocotb_model(
     name = "core_mini_axi_model",
-    trace = False,
+    trace = True,
     cflags = VERILATOR_BUILD_ARGS,
     hdl_toplevel = "CoreMiniAxi",
     verilog_source = "//hdl/chisel/src/coralnpu:CoreMiniAxi.sv",
@@ -55,7 +55,7 @@ verilator_cocotb_model(
 
 verilator_cocotb_model(
     name = "core_mini_debug_axi_model",
-    trace = False,
+    trace = True,
     cflags = VERILATOR_BUILD_ARGS,
     hdl_toplevel = "CoreMiniDebugAxi",
     verilog_source = "//hdl/chisel/src/coralnpu:CoreMiniDebugAxi.sv",
@@ -63,7 +63,7 @@ verilator_cocotb_model(
 
 verilator_cocotb_model(
     name = "rvv_core_mini_axi_model",
-    trace = False,
+    trace = True,
     cflags = VERILATOR_BUILD_ARGS,
     hdl_toplevel = "RvvCoreMiniAxi",
     verilog_source = "//hdl/chisel/src/coralnpu:RvvCoreMiniAxi.sv",
@@ -71,7 +71,7 @@ verilator_cocotb_model(
 
 verilator_cocotb_model(
     name = "rvv_core_mini_highmem_axi_model",
-    trace = False,
+    trace = True,
     cflags = VERILATOR_BUILD_ARGS,
     hdl_toplevel = "RvvCoreMiniHighmemAxi",
     verilog_source = "//hdl/chisel/src/coralnpu:RvvCoreMiniHighmemAxi.sv",
@@ -79,7 +79,7 @@ verilator_cocotb_model(
 
 verilator_cocotb_model(
     name = "rvv_core_mini_itcm512kb_dtcm512kb_axi_model",
-    trace = False,
+    trace = True,
     cflags = VERILATOR_BUILD_ARGS,
     hdl_toplevel = "RvvCoreMini_ITCM512KB_DTCM512KBAxi",
     verilog_source = "//hdl/chisel/src/coralnpu:RvvCoreMini_ITCM512KB_DTCM512KBAxi.sv",
@@ -137,7 +137,7 @@ RVV_CORE_MINI_AXI_SIM_TESTCASES = [
 # END_TESTCASES_FOR_rvv_core_mini_axi_sim_cocotb
 
 CORE_MINI_AXI_SIM_COMMON_TEST_KWARGS = {
-   "waves": False,
+   "waves": True,
     "seed": "42",
     "test_module": ["core_mini_axi_sim.py"],
     "deps": [

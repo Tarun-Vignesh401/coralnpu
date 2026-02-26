@@ -15,6 +15,7 @@
  */
 
 #include "sw/utils/utils.h"
+#include <riscv_vector.h>
 volatile uint32_t cycle_count_lo;
 volatile uint32_t cycle_count_hi;
 volatile uint32_t inst_count_lo;

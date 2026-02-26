@@ -26,7 +26,7 @@ package(default_visibility = ["//visibility:public"])
 
 coralnpu_v2_binary(
     name = "inst_cycle_counter_example",
-    srcs = ["inst_cycle_counter_example.cc"],
+    srcs = ["rvv_matmul.cc"],
     hdrs = ["//sw/utils:utils.h"],
 )
 
